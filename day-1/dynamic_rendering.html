@@ -11,7 +11,10 @@
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
     <script type="text/babel">
       // Your JSX code here
-      
+      let rootelement=ReactDOM.createRoot(document.getElementById("root"));
+      let day=true;
+      let ele=day ? <p>Seize the day</p> : <h2>non</h2>;
+      rootelement.render(ele);
     </script>
   </body>
 </html>
