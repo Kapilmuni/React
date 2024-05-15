@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Template</title>
+  </head>
+  <body>
+    <div id="root"></div>
+  </body>
+  <script src="https://www.unpkg.com/react@18.2.0/umd/react.development.js"></script>
+  <script src="https://www.unpkg.com/react-dom@18.2.0/umd/react-dom.development.js"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <script type="text/babel">
+    // Your  code will go here
+    function TodoHead({text,content}){
+      return(
+        <>
+          <h1 style={{margin:"auto",color:"blue",fontSize:"40px",width:"600px",marginTop:"20px"}}>{text}</h1>
+          <p style={{color:"#9F27AF",marginLeft:"225px",fontSize:"25px",width:"500px",}}>{content}</p>
+        </>
+      )
+    }
+    function TodoList(){
+        const [todos,setTodos]=React.useState([]);
+        const [newTodo,setNewTodo]=React.useState("");
+
+        const handleChange = (e) => {
+            setNewTodo(e.target.value); 
+        };
+        const addTodo=()=>{
+          setTodos(prevValue=>[...prevValue,{id:Date.now(), text:newTodo,completed:false}])
+          setNewTodo("")
+        }
+        const toggleTodo=(id)=>{
+          setTodos(prevTodos=>
+            prevTodos.map(todo=>
+            todo.id===id ? {...todo,completed:!todo.completed}:todo
+            )
+          )
+        }
+        const removeTodo=(id)=>{
+          setTodos(prevTodos=>
+            prevTodos.filter(todo=>todo.id !==id)
+          )
+        }
+
+        return(
+            <div style={{border:"2px solid green",width:"60%",margin:"auto",marginTop:"50px",}}>
+                <TodoHead text="Add new tasks in to Masai To-Do" />
+                <input type="text" value={newTodo}
+                  onChange={handleChange}
+                  placeholder="Please add a Todo" style={{height:"30px",width:"300px",marginLeft:"24%"}}/>
+                <button onClick={addTodo} style={{marginLeft:"10px",width:"100px",height:"34px",backgroundColor:"#4ABA3C ",color:"white",border:"1px solid grey",}}>Add Todo</button>
+                <TodoHead content="Here is your todos -"/>
+                <ol style={{marginLeft:"150px",}} >
+                  {todos.map((todo) =>(
+                    
+                    <li key={todo.id} style={{marginLeft:"70px"}}>
+                      <input type="checkbox" checked={todo.completed} onChange={()=> toggleTodo(todo.id)} style={{ width: "20px", height: "20px",marginTop:"15px" }}/>
+                      <span style={{fontSize:"20px",marginLeft:"10px",width:"150px"}}>{todo.text}</span>
+                      <button  onClick={()=>removeTodo(todo.id)} style={{fontSize:"15px",marginLeft:"10px",height:"30px",}}>Delete</button>
+                    </li>
+                  ))}
+                </ol>
+            </div>
+        )
+    }
+
+    let reactRoot=ReactDOM.createRoot(document.getElementById("root"));
+    reactRoot.render(<TodoList/>)
+  </script>
+</html>
