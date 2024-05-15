@@ -3,24 +3,54 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Example 1</title>
+    <title>Dynamic Greeting Card</title>
+    <style>
+      .container {
+        border: 4px solid green;
+        border-radius: 5px;
+        width: 50%;
+        padding: 20px;
+      }
+    </style>
   </head>
   <body>
     <div id="root"></div>
-    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
-    <script src="https://www.unpkg.com/react@18.2.0/umd/react.production.min.js"></script>
-    <script src="https://www.unpkg.com/react-dom@18.2.0/umd/react-dom.production.min.js"></script>
-    <script type="text/babel">
-      let rootelement=ReactDOM.createRoot(document.getElementById("root"));
-      function Foo(props){
-        return <h1>{props.text}</h1>
-      }
-      let ele=( 
-        <>
-          <Foo text="hii"/>
-        </>
-      )
-      rootelement.render(ele);
-    </script>
   </body>
+  <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <script type="text/babel">
+    function GreetingCard(props) {
+      return (
+        <div>
+          <h1>{props.head}</h1>
+          <h3>{props.greeting} {props.name}</h3>
+        </div>
+      );
+    }
+
+    function App() {
+      let list = [
+        { greeting: "Happy Birthday", name: "Ajay" },
+        { greeting: "Happy Anniversary", name: "Shahrukh Khan" },
+        { greeting: "Happy Diwali", name: "Mahendra" }
+      ];
+      return (
+        <div className="container">
+          <GreetingCard head="Greeting Card" />
+          {list.map((e, index) => (
+            <GreetingCard
+              key={index}
+              head="Greeting Card"
+              greeting={e.greeting}
+              name={e.name}
+            />
+          ))}
+        </div>
+      );
+    }
+
+    let reactRoot = ReactDOM.createRoot(document.getElementById("root"));
+    reactRoot.render(<App />);
+  </script>
 </html>

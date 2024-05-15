@@ -14,10 +14,10 @@
   <script type="text/babel">
     // Your Greeting component code will go here
     
-    function Greeting({message,name}){
+    function Greeting(props){
         return(
             <>
-                <h1>{message},{name}</h1>
+                <h1>{props.message},{props.name}</h1>
             </>
         )
     }
