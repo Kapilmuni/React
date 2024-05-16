@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Template</title>
+    <style>
+      #head{
+        font-size:40px ;
+        text-align: center;
+        color: rgb(108, 20, 20);
+      }
+      .search{
+        height: 30px;
+        width: 300px;
+        border: 2px solid rgb(143, 133, 133);
+        border-radius: 5px;
+        margin-left: 40%;
+      }
+      .container{
+        margin:auto;
+        margin-top: 3%;
+        width: 400px;
+      }
+
+      .user-profile{
+        border: 1px solid blueviolet;
+        height:128px;
+        margin-top: 5%;
+        display: grid;
+        grid-template-columns: 40% 60%;
+        border-radius: 2px;
+      }
+
+    </style>
+  </head>
+  <body>
+    <div id="root"></div>
+  </body>
+  <script src="https://www.unpkg.com/react@18.2.0/umd/react.development.js"></script>
+  <script src="https://www.unpkg.com/react-dom@18.2.0/umd/react-dom.development.js"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+  <script type="text/babel">
+    // Your  code will go here
+
+    const {useState,useEffect}=React
+
+    const UserProfile=({user})=>{
+      const {avatar,first_name,last_name,email}=user
+      return(
+        <div className="user-profile">
+          <div className="user-data"><img src={avatar} alt=""/></div>
+          <div>
+            <h2>{first_name} {last_name}</h2>
+            <p>{email}</p>
+
+          </div>
+        </div>
+      )
+    }
+
+    function App(){
+        const [users, setUsers] = useState([]);
+        const [searchQuery, setsearchQuery] = useState("");
+        useEffect(() => {
+            fetchUsers();
+        }, []);
+
+        const fetchUsers = async()=>{
+            try {
+                const response=await axios.get("https://reqres.in/api/users");
+                console.log(response.data.data)
+                setUsers(response.data.data)
+            } catch (error) {
+                console.log(error);
+            }
+        }
+        const HandleSearch=(e)=>{
+          setsearchQuery(e.target.value)
+        }
+
+        const FilteredUsers=users.filter((user)=>user.first_name.toLowerCase().includes(searchQuery.toLowerCase() ))
+
+        
+
+        return(
+            <div Id="main-container">
+            <h1 Id="head">User Profiles</h1>
+            <input className="search" type="text" placeholder="Search a user" value={searchQuery} onChange={HandleSearch}/>
+            <div className="container" >
+              {FilteredUsers.map((user)=>(
+                <UserProfile key={user.id} user={user}/>
+              ))}
+            </div>
+            </div>
+        )
+    }
+
+
+    let reactRoot=ReactDOM.createRoot(document.getElementById(("root")));
+    reactRoot.render(<App/>)
+
+  </script>
+</html>
